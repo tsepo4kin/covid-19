@@ -1,0 +1,58 @@
+<template>
+  <div>
+    <v-navigation-drawer v-if='drawer' class="primary" dark permanent app>
+      <v-list>
+          <!-- <v-list-item v-for="item in items" :to='item.link' :key="item.title" link>
+              <v-list-item-icon>
+                  <v-icon>{{ item.icon }}</v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-content>
+                  <v-list-item-title>{{ item.title }}</v-list-item-title>
+              </v-list-item-content>
+          </v-list-item> -->
+      </v-list>
+    </v-navigation-drawer>
+
+    <v-app-bar color="primary" dense dark app>
+        <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+
+        <v-toolbar-title class="headline">
+            <v-icon>mdi-virus</v-icon>
+            Covid-19
+        </v-toolbar-title>
+
+        <v-spacer></v-spacer>
+
+        <v-btn icon>
+            <v-icon>mdi-magnify</v-icon>
+        </v-btn>
+
+        <v-menu left bottom>
+            <template v-slot:activator="{ on, attrs }">
+                <v-btn icon v-bind="attrs" v-on="on">
+                    <v-icon>mdi-dots-vertical</v-icon>
+                </v-btn>
+            </template>
+
+            <v-list>
+                <!-- <v-list-item v-for="country in countries" :to="'/country/'+ country" :key="country" @click="() => {}" link>
+                    <v-list-item-title @click="updateCountry(country)">{{ country }}</v-list-item-title>
+                </v-list-item> -->
+            </v-list>
+        </v-menu>
+    </v-app-bar>
+  </div>
+</template>
+
+<script>
+export default {
+  data: () => ({
+    drawler: false
+  })
+}
+</script>
+
+<style>
+
+</style>
