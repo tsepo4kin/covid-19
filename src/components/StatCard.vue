@@ -1,18 +1,27 @@
 <template>
-        <v-card :class="bgColor" lg2 class="summury-card ma-3 pt-6" dark outlined width="240px">
-            <v-icon class="d-block text-center my-n2">{{icon}}</v-icon>
-            <v-tooltip bottom>
-                <template v-slot:activator="{ on, attrs }">
+    <v-card
+        :class="bgColor"
+        lg2
+        class="summury-card ma-3 pt-6"
+        dark
+        outlined
+        width="240px"
+    >
+        <v-icon class="d-block text-center my-n2">{{ icon }}</v-icon>
+        <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
                 <v-card-title
                     class="text-center d-block"
                     v-bind="attrs"
                     v-on="on"
-                >{{title}}</v-card-title>
-                </template>
-                <span>{{title + ': ' + newAmont}}</span>
-            </v-tooltip>
-            <v-card-subtitle class="text-center">{{amont}}</v-card-subtitle>
-        </v-card>
+                >
+                    {{ title }}
+                </v-card-title>
+            </template>
+            <span>{{ title + ": " + newAmont }}</span>
+        </v-tooltip>
+        <v-card-subtitle class="text-center">{{ amont }}</v-card-subtitle>
+    </v-card>
 </template>
 <script>
 export default {
@@ -21,7 +30,7 @@ export default {
         title: String,
         amont: Number,
         newAmont: Number,
-        bgColor: String
-    }
-}
+        bgColor: String,
+    },
+};
 </script>
