@@ -25,7 +25,7 @@ const routes = [
     props: true,
     beforeEnter(to, from, next) {
       let queryName = to.params.queryName
-      store.dispatch('newCountry', queryName)
+      store.dispatch('setNewCurrCountry', queryName)
       next()
     }
   }

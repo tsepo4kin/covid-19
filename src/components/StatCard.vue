@@ -18,7 +18,7 @@
                     {{ title }}
                 </v-card-title>
             </template>
-            <span>{{ title + ": " + newAmont }}</span>
+            <span>{{ title + " per day" + ": " + newAmont }}</span>
         </v-tooltip>
         <v-card-subtitle class="text-center">{{ amont }}</v-card-subtitle>
     </v-card>

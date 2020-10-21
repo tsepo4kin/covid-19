@@ -22,10 +22,12 @@
         <v-app-bar color="primary" dense dark app>
             <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
-            <v-toolbar-title class="headline">
-                <v-icon>mdi-virus</v-icon>
-                Covid-19
-            </v-toolbar-title>
+            <router-link to="/" tag='span' style="cursor: pointer">
+                <v-toolbar-title class="headline">
+                    <v-icon>mdi-virus</v-icon>
+                    Covid-19
+                </v-toolbar-title>
+            </router-link>
 
             <v-spacer></v-spacer>
 
@@ -61,9 +63,16 @@
 export default {
     data: () => ({
         drawer: false,
+        items: [
+            {
+                title: "Countries",
+                link: "countries",
+                icon: "icon",
+            },
+        ],
     }),
     mounted() {
-        this.$store.dispatch('updateTopCountries')
+        this.$store.dispatch("updateTopCountries");
     },
     computed: {
         topCountries() {

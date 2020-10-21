@@ -3,6 +3,7 @@ import axios from 'axios'
 
 export default {
   state: {
+    currCountry: null,
     countries: [],
     topCountries: []
   },
@@ -10,16 +11,16 @@ export default {
     newCountry (state, payload) {
       state.countries.push(payload)
     },
-    newCountryName (state, payload) {
-      state.currCountryName = payload
+    setNewCurrCountry (state, payload) {
+      state.currCountry = state.countries.find(e => e.country === payload)
     },
     newTopCountry (state, payload) {
       state.topCountries = payload
     }
   },
   actions: {
-    newCountryName ({ commit }, payload) {
-      commit('newCountryName', payload)
+    setNewCurrCountry ({ commit }, payload) {
+      commit('setNewCurrCountry', payload)
     },
 
 
@@ -54,6 +55,9 @@ export default {
     }
   },
   getters: {
+    getCurrCountry(state) {
+      return state.currCountry
+    },
     getCountries (state) {
       return state.countries
     },

@@ -65,11 +65,19 @@ export default {
         StatCard,
         lineChart,
     },
-    mounted() {
-      console.log(this.$store.getters.getCountries.find(country => country.country === this.queryName))
+    updated() {
+
+        const dataCountry = this.$store.getters.getCurrCountry
+
+        this.cards[0].amont = dataCountry.cases;
+        this.cards[0].newAmont = dataCountry.todayCases;
+
+        this.cards[1].amont = dataCountry.deaths;
+        this.cards[1].newAmont = dataCountry.todayDeaths;
+
+        this.cards[2].amont = dataCountry.recovered;
+        this.cards[2].newAmont = dataCountry.todayRecovered;
     },
-    methods: {
-    
-    }
+    methods: {},
 };
 </script>
