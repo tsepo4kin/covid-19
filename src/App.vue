@@ -20,7 +20,7 @@ export default {
     components: {
         AppHeader
     },
-    mounted() {
+    created() {
         this.$store.dispatch('setCountries')
     }
 };

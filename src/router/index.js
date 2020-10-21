@@ -3,7 +3,7 @@ import VueRouter from "vue-router";
 import Home from "../components/Home.vue";
 import Countries from "../components/Countries.vue"
 import Country from '../components/Country.vue'
-import store from '@/store'
+// import store from '@/store'
 
 Vue.use(VueRouter);
 
@@ -23,11 +23,6 @@ const routes = [
     name: 'Country',
     component: Country,
     props: true,
-    beforeEnter(to, from, next) {
-      let queryName = to.params.queryName
-      store.dispatch('setNewCurrCountry', queryName)
-      next()
-    }
   }
 ];
 

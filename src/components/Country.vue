@@ -2,7 +2,7 @@
     <main class="grey lighten-5 pa-2">
         <section>
             <h1 class="display-1 text-center">{{ queryName }}</h1>
-            <v-row align="center" justify="center">
+            <v-row align="center" justify="center" v-if="!loader">
                 <stat-card
                     v-for="(card, i) in cards"
                     :key="i + 'card'"
@@ -12,6 +12,14 @@
                     :newAmont="card.newAmont"
                     :bgColor="card.bg"
                 ></stat-card>
+            </v-row>
+            <v-row v-else align="center" justify="center">
+                <v-skeleton-loader v-for="i in 3" :key="i+'skeleton-loader'"
+                    class="summury-card ma-3"
+                    type="image"
+                    width="240px"
+                    height="120px"
+                ></v-skeleton-loader>
             </v-row>
         </section>
         <section>
@@ -36,48 +44,47 @@ export default {
     name: "Country",
     props: ["queryName"],
     data: () => ({
-        cards: [
-            {
-                title: "total cases",
-                bg: "primary lighten-2",
-                amont: 1000,
-                newAmont: 200,
-                icon: "mdi-alert-box",
-            },
-            {
-                title: "deaths",
-                bg: "red accent-2",
-                amont: 1000,
-                newAmont: 200,
-                icon: "mdi-emoticon-dead",
-            },
-            {
-                title: "recoveries",
-                bg: "teal lighten-1",
-                amont: 1000,
-                newAmont: 200,
-                icon: "mdi-hospital-box",
-            },
-        ],
         visuals: [],
+        dataCountry: null,
+        loader: true,
     }),
     components: {
         StatCard,
         lineChart,
     },
-    updated() {
-
-        const dataCountry = this.$store.getters.getCurrCountry
-
-        this.cards[0].amont = dataCountry.cases;
-        this.cards[0].newAmont = dataCountry.todayCases;
-
-        this.cards[1].amont = dataCountry.deaths;
-        this.cards[1].newAmont = dataCountry.todayDeaths;
-
-        this.cards[2].amont = dataCountry.recovered;
-        this.cards[2].newAmont = dataCountry.todayRecovered;
+    computed: {
+        cards() {
+            let dataCountry = this.$store.getters.getCountries.find(
+                (e) => e.country === this.queryName
+            );
+            return [
+                {
+                    title: "total cases",
+                    bg: "primary lighten-2",
+                    amont: dataCountry.cases,
+                    newAmont: dataCountry.todayCases,
+                    icon: "mdi-alert-box",
+                },
+                {
+                    title: "deaths",
+                    bg: "red accent-2",
+                    amont: dataCountry.deaths,
+                    newAmont: dataCountry.todayDeaths,
+                    icon: "mdi-emoticon-dead",
+                },
+                {
+                    title: "recoveries",
+                    bg: "teal lighten-1",
+                    amont: dataCountry.recovered,
+                    newAmont: dataCountry.todayRecovered,
+                    icon: "mdi-hospital-box",
+                },
+            ];
+        },
     },
-    methods: {},
+    async mounted() {
+        await this.$store.dispatch("setCountries");
+        this.loader = false;
+    },
 };
 </script>

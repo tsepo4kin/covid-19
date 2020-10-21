@@ -66,7 +66,7 @@ export default {
         items: [
             {
                 title: "Countries",
-                link: "countries",
+                link: "/countries",
                 icon: "icon",
             },
         ],

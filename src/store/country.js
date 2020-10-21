@@ -3,7 +3,6 @@ import axios from 'axios'
 
 export default {
   state: {
-    currCountry: null,
     countries: [],
     topCountries: []
   },
@@ -11,19 +10,11 @@ export default {
     newCountry (state, payload) {
       state.countries.push(payload)
     },
-    setNewCurrCountry (state, payload) {
-      state.currCountry = state.countries.find(e => e.country === payload)
-    },
     newTopCountry (state, payload) {
       state.topCountries = payload
     }
   },
   actions: {
-    setNewCurrCountry ({ commit }, payload) {
-      commit('setNewCurrCountry', payload)
-    },
-
-
     updateTopCountries ({ commit }) {
       commit('clearError')
       commit('setLoading', true)
@@ -39,11 +30,11 @@ export default {
         })
     },
 
-    setCountries({commit, state}) {
+    async setCountries({commit, state}) {
       commit('clearError')
       commit('setLoading', true)
 
-      axios
+      await axios
         .get('https://corona.lmao.ninja/v2/countries')
         .then((response) => {
           let data = response.data
@@ -55,9 +46,6 @@ export default {
     }
   },
   getters: {
-    getCurrCountry(state) {
-      return state.currCountry
-    },
     getCountries (state) {
       return state.countries
     },
