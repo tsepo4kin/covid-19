@@ -2,6 +2,10 @@
   <main>
     <h1>{{ msg }}</h1>
     <!-- {{ countries }} -->
+    <v-text-field
+      placeholder="country name"
+      v-model="countryName"
+    ></v-text-field>
     <v-list>
       <v-subheader>COUNTRIES</v-subheader>
       <v-list-item-group color="primary">
@@ -24,11 +28,17 @@ export default {
   data () {
     return {
       msg: 'Countries stats',
-      countries: null
+      countryName: null
     }
   },
-  mounted () {
-    this.countries = this.$store.getters.getCountries
+  computed: {
+    countries() {
+      if(this.countryName) {
+        return this.$store.getters.getCountries.filter(e => e.country.toLowerCase().indexOf(this.countryName.toLowerCase()) >= 0)
+      } else {
+        return this.$store.getters.getCountries
+      }
+    }
   },
   components: {
   }

@@ -67,7 +67,7 @@ export default {
             {
                 title: "Countries",
                 link: "/countries",
-                icon: "icon",
+                icon: "mdi-clipboard-list-outline",
             },
         ],
     }),

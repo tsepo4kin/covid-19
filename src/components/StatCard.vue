@@ -1,7 +1,6 @@
 <template>
     <v-card
         :class="bgColor"
-        lg2
         class="summury-card ma-3 pt-6"
         dark
         outlined
