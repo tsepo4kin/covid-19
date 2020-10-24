@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import commonModule from './common'
-import countryModule from './country'
+import commonModule from "./common";
+import countryModule from "./country";
 
 Vue.use(Vuex);
 
