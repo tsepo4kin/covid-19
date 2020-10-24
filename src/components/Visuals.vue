@@ -133,7 +133,6 @@ export default {
               result[1].datasets[0].data = this.visualDeaths.deathsPerDay
               result[2].datasets[0].data = this.visualRecoveries.recoveriesPerDay
             }
-            console.log(result)
             return result
         },
 
@@ -181,7 +180,7 @@ export default {
               res[1].datasets[0].data = this.visualDeaths.deaths
               res[2].datasets[0].data = this.visualRecoveries.recovered
             }
-            console.log(res)
+
             return res
         }
     },

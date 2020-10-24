@@ -46,6 +46,9 @@ export default {
     },
     computed: {
         dataCountry() {
+            if(this.queryName !== this.$store.getters.getCountryHistory.data.country) {
+                this.$store.dispatch("setCountryHistory", this.queryName);
+            }
             return this.$store.getters.getCountryHistory.data;
         },
         cards() {
