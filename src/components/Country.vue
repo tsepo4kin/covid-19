@@ -26,38 +26,28 @@
         </section>
         <section>
             <h2 class="display-1 text-center">Visuals</h2>
-            <v-row v-if="!loader" align="center" justify="center">
-                <lineChart
-                    class="mx-2"
-                    v-for="(visual, i) in visuals"
-                    :key="i + 'visual'"
-                    :chartData="visual.chartData"
-                    :options="visual.options"
-                ></lineChart>
-            </v-row>
+            <visuals v-if="!loader" :dataCountry="dataCountry"></visuals>
         </section>
     </main>
 </template>
 
 <script>
 import StatCard from "./StatCard";
-import lineChart from "./LineChart";
+import Visuals from "./Visuals";
 export default {
     name: "Country",
     props: ["queryName"],
     data: () => ({
-        dataCountry: null,
         loader: true,
-        visualOptions: {
-            responsive: true,
-            maintainAspectRatio: false,
-        },
     }),
     components: {
         StatCard,
-        lineChart,
+        Visuals,
     },
     computed: {
+        dataCountry() {
+            return this.$store.getters.getCountryHistory.data;
+        },
         cards() {
             let dataCountry = this.$store.getters.getCountries.find(
                 (e) => e.country === this.queryName
@@ -86,95 +76,11 @@ export default {
                 },
             ];
         },
-
-        visualCases() {
-            let labelsCases = [];
-            let casesPerDay = [];
-            for (let key in this.dataCountry.timeline.cases) {
-                labelsCases.push(key);
-                casesPerDay.push(this.dataCountry.timeline.cases[key]);
-            }
-            return { labels: labelsCases, casesPerDay: casesPerDay };
-        },
-
-        visualDeaths() {
-            let labelsDeaths = [];
-            let deathsPerDay = [];
-
-            for (let key in this.dataCountry.timeline.deaths) {
-                labelsDeaths.push(key);
-                deathsPerDay.push(this.dataCountry.timeline.deaths[key]);
-            }
-            return { labels: labelsDeaths, deathsPerDay: deathsPerDay };
-        },
-
-        visualRecoveries() {
-            let labelsRecoveries = [];
-            let recoveriesPerDay = [];
-
-            for (let key in this.dataCountry.timeline.recovered) {
-                labelsRecoveries.push(key);
-                recoveriesPerDay.push(this.dataCountry.timeline.recovered[key]);
-            }
-            return {
-                labels: labelsRecoveries,
-                recoveriesPerDay: recoveriesPerDay,
-            };
-        },
-
-        visuals() {
-            return [
-                {
-                    options: this.visualOptions,
-                    chartData: {
-                        labels: this.visualCases.labels,
-                        datasets: [
-                            {
-                                label: "Total cases",
-                                backgroundColor: "#6AAAFF",
-                                data: this.visualCases.casesPerDay,
-                            },
-                        ],
-                    },
-                },
-
-                {
-                    options: this.visualOptions,
-                    chartData: {
-                        labels: this.visualDeaths.labels,
-                        datasets: [
-                            {
-                                label: "Deaths",
-                                backgroundColor: "#ff5252",
-                                data: this.visualDeaths.deathsPerDay,
-                            },
-                        ],
-                    },
-                },
-
-                {
-                    options: this.visualOptions,
-                    chartData: {
-                        labels: this.visualRecoveries.labels,
-                        datasets: [
-                            {
-                                label: "Recoveries",
-                                backgroundColor: "#26a69a",
-                                data: this.visualRecoveries.recoveriesPerDay,
-                            },
-                        ],
-                    },
-                },
-            ];
-        },
     },
     async mounted() {
         await this.$store.dispatch("setCountries");
-        await this.$store.dispatch("setCountryHistory", this.queryName)
-        this.dataCountry = this.$store.getters.getCountryHistory.data
+        await this.$store.dispatch("setCountryHistory", this.queryName);
 
-        console.log(this.dataCountry)
-        console.log(this.visualCases)
         this.loader = false;
     },
 };
