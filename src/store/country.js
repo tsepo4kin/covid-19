@@ -3,6 +3,7 @@ import axios from 'axios'
 
 export default {
   state: {
+    countryHistory: null,
     countries: [],
     topCountries: []
   },
@@ -12,6 +13,9 @@ export default {
     },
     newTopCountry (state, payload) {
       state.topCountries = payload
+    },
+    setCountryHistory (state, payload) {
+      state.countryHistory = payload
     }
   },
   actions: {
@@ -26,6 +30,18 @@ export default {
 
           commit('newTopCountry', data)
 
+          commit('setLoading', false)
+        })
+    },
+
+    async setCountryHistory({commit}, payload) {
+      commit('clearError')
+      commit('setLoading', true)
+
+      await axios 
+        .get(`https://corona.lmao.ninja/v2/historical/${payload}`)
+        .then((response) => {
+          commit('setCountryHistory', response)
           commit('setLoading', false)
         })
     },
@@ -54,6 +70,9 @@ export default {
     },
     topCountries (state) {
       return state.topCountries
+    },
+    getCountryHistory (state) {
+      return state.countryHistory
     }
   }
 }
