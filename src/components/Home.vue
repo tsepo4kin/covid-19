@@ -2,7 +2,7 @@
   <main class="grey lighten-5 pa-2">
     <section>
       <h1 class="display-1 text-center">World summary stats</h1>
-      <v-row align="center" justify="center">
+      <v-row v-if='!loader' align="center" justify="center">
         <stat-card
           v-for="(card, i) in cards"
           :key="i + 'card'"
@@ -13,28 +13,33 @@
           :bgColor="card.bg"
         ></stat-card>
       </v-row>
-    </section>
-    <section>
-      <h2 class="display-1 text-center">Visuals</h2>
-      <v-row align="center" justify="center">
-        <lineChart
-          class="mx-2"
-          v-for="(visual, i) in visuals"
-          :key="i + 'visual'"
-          :chartData="visual.chartData"
-          :options="visual.options"
-        ></lineChart>
+      <v-row v-else align="center" justify="center">
+        <v-skeleton-loader
+          v-for="i in 3"
+          :key="i + 'skeleton-loader'"
+          class="summury-card ma-3"
+          type="image"
+          width="240px"
+          height="120px"
+        ></v-skeleton-loader>
       </v-row>
+    </section>
+    <section v-if='!loader'>
+      <h2 class="display-1 text-center">Visuals</h2>
+      <visuals :dataCountry='allData'></visuals>
     </section>
   </main>
 </template>
 <script>
 import statCard from "./StatCard";
-import lineChart from "./LineChart";
+import Visuals from "./Visuals"
 export default {
   data: () => ({
+    loader: true,
     continents: null,
-    allData: null,
+    allData: {
+      timeline: null
+    },
     cards: [
       {
         title: "total cases",
@@ -57,33 +62,10 @@ export default {
         newAmont: 200,
         icon: "mdi-hospital-box"
       }
-    ],
-    visuals: [
-      {
-        chartData: null,
-        options: {
-          responsive: true,
-          maintainAspectRatio: false
-        }
-      },
-      {
-        chartData: null,
-        options: {
-          responsive: true,
-          maintainAspectRatio: false
-        }
-      },
-      {
-        chartData: null,
-        options: {
-          responsive: true,
-          maintainAspectRatio: false
-        }
-      }
     ]
   }),
-  mounted() {
-    this.axios
+  async mounted() {
+    await this.axios
       .get("https://corona.lmao.ninja/v2/continents")
       .then(res => {
         this.continents = res;
@@ -91,13 +73,14 @@ export default {
       })
       .catch(e => console.log(e));
 
-    this.axios
+    await this.axios
       .get("https://corona.lmao.ninja/v2/historical/all")
       .then(res => {
-        this.allData = res;
-        this.updateVisuals();
+        this.allData.timeline = res.data;
       })
       .catch(e => console.log(e));
+
+    this.loader = false
   },
   methods: {
     updateStats() {
@@ -126,65 +109,11 @@ export default {
       this.cards[2].amont = recoveries;
       this.cards[2].newAmont = todayRecoveries;
     },
-    updateVisuals() {
-      let data = this.allData.data;
-
-      let labelsCases = [];
-      let casesPerDay = [];
-      let labelsDeaths = [];
-      let deathsPerDay = [];
-      let labelsRecoveries = [];
-      let recoveriesPerDay = [];
-
-      for (let key in data.cases) {
-        labelsCases.push(key);
-        casesPerDay.push(data.cases[key]);
-      }
-      this.visuals[0].chartData = {
-        labels: labelsCases,
-        datasets: [
-          {
-            label: "Total cases",
-            backgroundColor: "#6AAAFF",
-            data: casesPerDay
-          }
-        ]
-      };
-
-      for (let key in data.deaths) {
-        labelsDeaths.push(key);
-        deathsPerDay.push(data.deaths[key]);
-      }
-      this.visuals[1].chartData = {
-        labels: labelsDeaths,
-        datasets: [
-          {
-            label: "Deaths",
-            backgroundColor: "#ff5252",
-            data: deathsPerDay
-          }
-        ]
-      };
-
-      for (let key in data.recovered) {
-        labelsRecoveries.push(key);
-        recoveriesPerDay.push(data.recovered[key]);
-      }
-      this.visuals[2].chartData = {
-        labels: labelsRecoveries,
-        datasets: [
-          {
-            label: "Recoveries",
-            backgroundColor: "#26a69a",
-            data: recoveriesPerDay
-          }
-        ]
-      };
-    }
+    
   },
   components: {
     statCard,
-    lineChart
+    Visuals
   }
 };
 </script>

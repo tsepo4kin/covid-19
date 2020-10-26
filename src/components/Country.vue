@@ -85,7 +85,7 @@ export default {
   async mounted() {
     await this.$store.dispatch("setCountries");
     await this.$store.dispatch("setCountryHistory", this.queryName);
-
+    console.log(this.dataCountry)
     this.loader = false;
   }
 };
