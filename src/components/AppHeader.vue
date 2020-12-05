@@ -31,8 +31,8 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn icon>
-        <v-icon>mdi-magnify</v-icon>
+      <v-btn to="/countries" text>
+        Countries
       </v-btn>
 
       <v-menu left bottom>
